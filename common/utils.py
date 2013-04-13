@@ -46,6 +46,16 @@ def get_userids_file(infile):
     return uids
 
 
+def get_terms_file(infile):
+    inh = open(infile,'r')
+    terms = []
+    for ln in inh:
+        s = ln.strip('\r\n"')
+        terms.append(s.lower())
+    inh.close()
+    return terms
+
+
 def split_list_by(l,n):
     rounds = len(l) / n
     result = []

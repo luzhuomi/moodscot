@@ -1,16 +1,17 @@
 import pycurl, json, urllib2, sys, sets
 from dateutil.parser import parse
-
 from common.utils import *
 
-import espeak # apt-get install python-espeak espeak
 
-STREAM_URL = "https://stream.twitter.com/1/statuses/filter.json?follow="
+from espeak import espeak # apt-get install python-espeak espeak
+from datetime import datetime
+
+#STREAM_URL = "https://stream.twitter.com/1/statuses/filter.json?follow="
+STREAM_URL = "https://stream.twitter.com/1/statuses/filter.json?track="
 
 
 def speak(text):
-    t = datetime.now().strftime("%k %M")
-    espeak.synth("You're listening to Luke's radio station. The time is %s" % t)
+    espeak.synth(text)
 
 
 def analyze(data):
@@ -18,27 +19,31 @@ def analyze(data):
         data_json = json.loads(data)
         if data_json.has_key("text"):
             text = data_json["text"]
+            speak(text)
             print "%s" % text
     except ValueError,e:
         pass
 
 def on_receive(data):
     #data_json = json.loads(data)
-    print data    
+    #print data    
     analyze(data)
 
 if len(sys.argv) < 1:
-    print "Usage: stream.py <user_id file>"
+    print "Usage: stream.py <cred_file> <terms_file>"
     sys.exit(1)
 
-user_ids = get_userids_file(sys.argv[2])
+
+#user_ids = get_userids_file(sys.argv[2])
+terms = get_terms_file(sys.argv[2])
 
 def loop(retry):
     try:
         cred = read_cred(sys.argv[1])
         conn = pycurl.Curl()
         conn.setopt(pycurl.USERPWD, "%s:%s" % (cred['user'], cred['password']))
-        conn.setopt(pycurl.URL, STREAM_URL+','.join(map(str,user_ids)))
+        # conn.setopt(pycurl.URL, STREAM_URL+','.join(map(str,user_ids)))
+        conn.setopt(pycurl.URL, STREAM_URL+','.join(map(str,terms)))
         conn.setopt(pycurl.WRITEFUNCTION, on_receive)
         conn.perform()
     except:
@@ -52,3 +57,4 @@ def loop(retry):
             sys.exit(0)
 
 loop(5)
+
