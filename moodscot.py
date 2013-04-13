@@ -22,13 +22,14 @@ def move(unit):
     piface.pfio.digital_write(1, 0)
 
 
-def analyze(data):
+def act(data):
     try:
         data_json = json.loads(data)
         if data_json.has_key("text"):
             text = data_json["text"]
             speak(text)
-            move(len(text)/5 + 1)
+            words = text.split(' ')
+            move(len(words)+1)
             print "%s" % text
     except ValueError,e:
         pass
@@ -36,7 +37,7 @@ def analyze(data):
 def on_receive(data):
     #data_json = json.loads(data)
     #print data    
-    analyze(data)
+    act(data)
 
 if len(sys.argv) < 1:
     print "Usage: stream.py <cred_file> <terms_file>"
