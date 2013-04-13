@@ -5,6 +5,9 @@ from common.utils import *
 
 from espeak import espeak # apt-get install python-espeak espeak
 from datetime import datetime
+from time import sleep
+
+import piface.pfio
 
 #STREAM_URL = "https://stream.twitter.com/1/statuses/filter.json?follow="
 STREAM_URL = "https://stream.twitter.com/1/statuses/filter.json?track="
@@ -13,6 +16,11 @@ STREAM_URL = "https://stream.twitter.com/1/statuses/filter.json?track="
 def speak(text):
     espeak.synth(text)
 
+def move(unit):
+    piface.pfio.digital_write(1, 1)
+    sleep(unit)
+    piface.pfio.digital_write(1, 0)
+
 
 def analyze(data):
     try:
@@ -20,6 +28,7 @@ def analyze(data):
         if data_json.has_key("text"):
             text = data_json["text"]
             speak(text)
+            move(len(text)/5 + 1)
             print "%s" % text
     except ValueError,e:
         pass
@@ -36,6 +45,8 @@ if len(sys.argv) < 1:
 
 #user_ids = get_userids_file(sys.argv[2])
 terms = get_terms_file(sys.argv[2])
+
+piface.pfio.init()
 
 def loop(retry):
     try:
