@@ -3,8 +3,14 @@ from dateutil.parser import parse
 
 from common.utils import *
 
+import espeak # apt-get install python-espeak espeak
 
 STREAM_URL = "https://stream.twitter.com/1/statuses/filter.json?follow="
+
+
+def speak(text):
+    t = datetime.now().strftime("%k %M")
+    espeak.synth("You're listening to Luke's radio station. The time is %s" % t)
 
 
 def analyze(data):
