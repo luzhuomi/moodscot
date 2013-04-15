@@ -1,4 +1,4 @@
-import pycurl, json, urllib2, sys, sets
+import pycurl, json, urllib2, sys, sets, re
 from dateutil.parser import parse
 from common.utils import *
 
@@ -14,22 +14,29 @@ STREAM_URL = "https://stream.twitter.com/1/statuses/filter.json?track="
 
 
 def speak(text):
-    espeak.synth(text)
+    t = re.sub(r"http://[^ ]*", "", text)
+    t = re.sub(r"@", "", t)
+    t = re.sub(r"#", "", t)
+    espeak.synth(t)
 
 def move(unit):
     piface.pfio.digital_write(1, 1)
-    sleep(unit)
+    sleep(max(1,unit/4))
     piface.pfio.digital_write(1, 0)
 
+
+def speak_and_move(text):
+    speak(text)
+    words = text.split(' ')
+    move(len(words)+1)    
 
 def act(data):
     try:
         data_json = json.loads(data)
         if data_json.has_key("text"):
+            # todo get the mood
             text = data_json["text"]
-            speak(text)
-            words = text.split(' ')
-            move(len(words)+1)
+            speak_and_move
             print "%s" % text
     except ValueError,e:
         pass
@@ -43,11 +50,13 @@ if len(sys.argv) < 1:
     print "Usage: stream.py <cred_file> <terms_file>"
     sys.exit(1)
 
+espeak.set_voice("f1") # female
+piface.pfio.init()
 
 #user_ids = get_userids_file(sys.argv[2])
+'''
 terms = get_terms_file(sys.argv[2])
 
-piface.pfio.init()
 
 def loop(retry):
     try:
@@ -69,4 +78,5 @@ def loop(retry):
             sys.exit(0)
 
 loop(5)
+'''
 
