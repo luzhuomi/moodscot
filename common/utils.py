@@ -1,7 +1,7 @@
 import urllib2, sys, sets
 import json
-from mongomodel.crawl.twitter.models import ScreenNameCache,init
-import pymongo
+#from mongomodel.crawl.twitter.models import ScreenNameCache,init
+#import pymongo
 
 from twython import Twython, TwythonError
 
@@ -23,7 +23,7 @@ def read_cred(file):
     return cred
 
 URL = "https://api.twitter.com/1/users/lookup.json?include_entities=true&screen_name="
-
+'''
 def get_userids(cred,usernames):
     print "usernames" + str(usernames)
     batches = split_list_by(usernames, MAX_TERM_ALLOWED)
@@ -93,7 +93,7 @@ def get_userids_file(cred,infile):
     else:
         db.connection.disconnect()
     return (found+uids)
-
+'''
 
 def split_list_by(l,n):
     rounds = len(l) / n

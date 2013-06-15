@@ -47,10 +47,15 @@ if len(sys.argv) < 1:
     sys.exit(1)
 
 espeak.set_voice("f1") # female
-piface.pfio.init()
+# piface.pfio.init()
 
 
 cred = read_cred(sys.argv[1])
+
+
+client_args = {
+    'verify': False
+}
 
 class MyStreamer(TwythonStreamer):
     def on_success(self, data):
@@ -61,7 +66,7 @@ class MyStreamer(TwythonStreamer):
 
 
 stream = MyStreamer(cred['consumer_key'], cred['consumer_secret'],
-                    cred['access_token_key'], cred['access_token_secret'])
+                    cred['access_token_key'], cred['access_token_secret'],client_args=client_args)
 
 
 keywords = sys.argv[2]
