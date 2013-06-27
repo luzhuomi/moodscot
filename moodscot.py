@@ -7,6 +7,7 @@ from espeak import espeak # apt-get install python-espeak espeak
 from datetime import datetime
 from time import sleep
 
+from twython import TwythonStreamer # easy_install twython
 def speak(text):
     t = re.sub(r"http://[^ ]*", "", text)
     t = re.sub(r"@", "", t)
