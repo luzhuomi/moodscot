@@ -99,3 +99,28 @@ sudo apt-get install festvox-don festvox-rablpc16k festvox-kallpc16k festvox-kdl
 
 pipe = subprocess.Popen(["festival", "-b", "(SayText \"" + t + "\")"], stdin=subprocess.PIPE,  stdout=DEVNULL, stderr=DEVNULL)
 '''
+
+
+import urllib2
+import simplejson 
+
+def get_mood(text):
+    response = urllib2.urlopen("http://172.20.192.113/moodsense.org/MoodAnalyzer/Classifier?content=" + text)
+    obj = simplejson.loads(response.read())
+    mood = None
+    if obj.has_key('moodBean'):
+        mbean = obj['moodBean']
+        if mbean.has_key('mood'):
+            mood = mbean['mood']
+    return mood
+
+'''
+The sample moodsense API:
+http://172.20.192.113/moodsense.org/MoodAnalyzer/Classifier?content=i%20am%20happy
+ 
+ 
+http://172.20.192.113/moodsense.org/MoodAnalyzer/Classifier?content=xxxxxx where xxxx is the input content
+and the output in JSON format:
+{'moodBean':{{'content':'i am happy','mood':'sadness'}}
+
+'''
