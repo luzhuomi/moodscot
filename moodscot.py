@@ -3,7 +3,7 @@ from dateutil.parser import parse
 from common.utils import *
 
 
-from espeak import espeak # apt-get install python-espeak espeak
+#from espeak import espeak # apt-get install python-espeak espeak
 from datetime import datetime
 from time import sleep
 
@@ -46,7 +46,7 @@ if len(sys.argv) < 1:
     print "Usage: python moodscot.py <cred_file> <terms>"
     sys.exit(1)
 
-espeak.set_voice("f1") # female
+# espeak.set_voice("f1") # female
 # piface.pfio.init()
 
 
@@ -66,7 +66,8 @@ class MyStreamer(TwythonStreamer):
 
 
 stream = MyStreamer(cred['consumer_key'], cred['consumer_secret'],
-                    cred['access_token_key'], cred['access_token_secret'],client_args=client_args)
+                    cred['access_token_key'], cred['access_token_secret'],
+    timeout=300, retry_count=None, retry_in=10, client_args=client_args)
 
 
 keywords = sys.argv[2]
