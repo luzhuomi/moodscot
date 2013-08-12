@@ -49,7 +49,7 @@ def speak(text):
 	return
 
 
-characters = { 
+characters ={ 
   "princess" : { "joy" : 713, "sadness" : 861, "disgusted" : 714 }, 
   "angry" : { "joy" : 716 , "disgusted" : 714, "anger" : 871 },
   "diva" : { "joy" : 713, "sadness" : 861, "disgusted" : 714 },
@@ -63,7 +63,6 @@ characters = {
 @celery.task
 def princess(character, mood, text):
 
-	print "test1"
 	speak(text)
 	cmd = str(characters[character][mood])
 	

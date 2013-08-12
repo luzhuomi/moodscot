@@ -3,8 +3,10 @@ from __future__ import absolute_import
 from celery import Celery
 
 celery = Celery('workers.celery',
-                broker='amqp://guest@localhost//',
-                backend='amqp://',
+                # broker='amqp://guest@localhost//',
+                # backend='amqp://',
+		broker='amqp://guest@172.20.130.245//',
+		backend='amqp://guest@172.20.130.245//',
                 include=['workers.tasks'])
 
 # Optional configuration, see the application user guide.
@@ -13,7 +15,7 @@ celery.conf.update(
     CELERY_ROUTES = {
         'workers.tasks.princess': {'queue': 'princess'},
         'workers.tasks.monkey': {'queue': 'monkey'},        
-        'workers.tasks.angry': {'queue': 'angry'},        
+        'workers.tasks.anger': {'queue': 'anger'},        
         'workers.tasks.diva': {'queue': 'diva'},        
         'workers.tasks.normal': {'queue': 'normal'},        
     },    
