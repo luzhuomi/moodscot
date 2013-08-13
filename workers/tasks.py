@@ -63,7 +63,6 @@ characters = {
 @celery.task
 def princess(character, mood, text):
 
-	print "test1"
 	speak(text)
 	cmd = str(characters[character][mood])
 	
