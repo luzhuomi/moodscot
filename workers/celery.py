@@ -2,11 +2,13 @@ from __future__ import absolute_import
 
 from celery import Celery
 
+master = '172.27.42.35'
+
 celery = Celery('workers.celery',
                 # broker='amqp://guest@localhost//',
                 # backend='amqp://',
-		broker='amqp://guest@172.20.130.245//',
-		backend='amqp://guest@172.20.130.245//',
+		broker='amqp://guest@'+master+'//',
+		backend='amqp://guest@'+master+'//',
                 include=['workers.tasks'])
 
 # Optional configuration, see the application user guide.

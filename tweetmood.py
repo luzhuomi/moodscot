@@ -6,7 +6,7 @@ import subprocess, re, os, json, sys, sets
 from workers.tasks import princess, diva, monkey, anger, normal
 import urllib2, threading
 from dateutil.parser import parse
-from espeak import espeak
+#from espeak import espeak
 from datetime import datetime
 from time import sleep
 
